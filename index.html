@@ -2,7 +2,6 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=7, IE=9, IE=10">
     <!-- On iOS, as part of optimizing your web application, have it use the
     standalone mode to look more like a native application. When you use this
     standalone mode, Safari is not used to display the web content—specifically,
@@ -21,12 +20,12 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Getting Started - Mobile</title>
 
-    <link rel="stylesheet" href="http://jsdev.arcgis.com/3.6/js/esri/css/esri.css">
+    <link rel="stylesheet" href="http://js.arcgis.com/3.7/js/esri/css/esri.css">
 
     <link rel="stylesheet" href="css/main.css">
 
     <script>var dojoConfig = { mblAlwaysHideAddressBar: true };</script>
-    <script src="http://jsdev.arcgis.com/3.6compact/"></script>
+    <script src="http://js.arcgis.com/3.7compact/"></script>
     <script>
     require(["esri/map", "dojox/mobile", "dojox/mobile/parser", "esri/sniff", 
             "dojox/mobile/deviceTheme", "dojo/dom", "dijit/registry", "dojo/on", 
@@ -36,12 +35,25 @@
         parser.parse();
         mobile.hideAddressBar();
 
+		/*
         var map = new esri.Map("map", {
           basemap: "topo",
-          center: [-52.72, 47.6],
-          zoom: 13,
+          center: [-52.72, 47],
+          zoom: 7,
           slider: false
         });
+		*/
+		var customExtentAndSR = new esri.geometry.Extent(288800,5248000,348000,5295000,new esri.SpatialReference({"wkid":32181}));
+		var map = new esri.Map("map",{
+			extent:customExtentAndSR,
+			zoom: 1
+		} );
+		  
+		//var agoServiceURL = "http://server.arcgisonline.com/ArcGIS/rest/services/ESRI_StreetMap_World_2D/MapServer";
+		var agoServiceURL = "http://map.stjohns.ca/Arcgis/rest/services/MapCentre/STJ_Basemap_Topo_MapService/MapServer";
+		var agoLayer = new esri.layers.ArcGISTiledMapServiceLayer(agoServiceURL);
+		map.addLayer(agoLayer);
+  
         map.on("load", mapLoadHandler);
 
         var resizeEvt = (window.onorientationchange !== undefined && !has('android')) ? "orientationchange" : "resize";
@@ -98,8 +110,9 @@
 
     <div id="aboutView" data-dojo-type="dojox.mobile.View">
       <h1 data-dojo-type="dojox.mobile.Heading" data-dojo-props="back:'Map', moveTo:'mapView'">About</h1>
-      <p style="padding: 5px;">This area can contain additional information about our application.</p>
+      <p style="padding: 5px;">This area can contain additional information about your application.</p>
       <p>Information on this Web site is provided as a public service by the City of St. John's. We cannot guarantee that all information is current or accurate. Users should verify the information before acting on it. Although we make every effort to ensure that all information is accurate and complete, we cannot guarantee its integrity.
+	  The use of this Web site is subject to the following terms and conditions and constitutes the user's agreement to those terms and conditions. Information on this web site is provided by the City solely for the user's information and it is provided without warranty, guarantee, or responsibility of any kind, either express or implied. The City of St. John's and its employees will not be liable for any loss or damages of any nature, either direct or indirect, arising from use of the information provided on this Web site or information provided at any other site that can be accessed from this site.
       </p>
     </div>
   </body>
